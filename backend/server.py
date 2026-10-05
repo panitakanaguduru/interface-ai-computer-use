@@ -8,26 +8,13 @@ import traceback
 # ============================================================
 # PLAYWRIGHT / RENDER CONFIG
 # ============================================================
-#
-# Render installs the Playwright Chromium binaries into this
-# directory during the build:
-#
-# /opt/render/project/.playwright
-#
-# Playwright normally looks in ~/.cache/ms-playwright.
-# Setting this before importing browser_agent/replay_engine
-# makes runtime Playwright use the same location as the build.
-#
-# Local development is unaffected because setdefault() respects
-# an already configured PLAYWRIGHT_BROWSERS_PATH. On Render,
-# this points Playwright to the browser installed at build time.
-# ============================================================
 
 if os.getenv("RENDER"):
     os.environ.setdefault(
         "PLAYWRIGHT_BROWSERS_PATH",
         "/opt/render/project/.playwright",
     )
+
 
 from http.server import (
     SimpleHTTPRequestHandler,
@@ -185,6 +172,71 @@ def validate_customer_request(
         )
 
     return True, None
+
+
+# ============================================================
+# HUMAN ESCALATION INTENT
+# ============================================================
+
+def is_human_escalation_request(
+    task,
+):
+    """
+    Detect explicit requests for human assistance.
+
+    Human escalation takes priority over normal
+    capability routing and browser discovery.
+    """
+
+    text = str(
+        task or ""
+    ).lower().strip()
+
+    normalized = re.sub(
+        r"[^a-z0-9\s]",
+        " ",
+        text,
+    )
+
+    normalized = re.sub(
+        r"\s+",
+        " ",
+        normalized,
+    ).strip()
+
+    escalation_phrases = [
+        "speak to a human",
+        "speak with a human",
+        "talk to a human",
+        "talk with a human",
+        "need a human",
+        "want a human",
+        "human agent",
+        "human representative",
+        "customer service",
+        "customer support",
+        "live agent",
+        "live representative",
+        "real person",
+        "speak to someone",
+        "talk to someone",
+        "connect me to a human",
+        "connect me with a human",
+        "connect to a human",
+        "connect with a human",
+        "escalate to a human",
+        "escalate this",
+        "need to speak to human",
+        "need to speak with human",
+        "need to talk to human",
+        "need to talk with human",
+        "connect now",
+    ]
+
+    return any(
+        phrase in normalized
+        for phrase in escalation_phrases
+    )
 
 
 # ============================================================
@@ -799,6 +851,104 @@ class PortalHandler(
             )
             return
 
+        # ====================================================
+        # EXPLICIT HUMAN ESCALATION
+        # ====================================================
+        #
+        # IMPORTANT:
+        # Human requests are checked BEFORE capability routing.
+        #
+        # This prevents:
+        #
+        # "I want to speak to a human about my pending claims"
+        #
+        # from accidentally being classified as:
+        #
+        # pending_claims_lookup
+        #
+        # It also prevents "connect now" from entering browser
+        # discovery and attempting a sensitive submit action.
+        # ====================================================
+
+        if is_human_escalation_request(
+            task
+        ):
+            print(
+                "\n=================================",
+                flush=True,
+            )
+            print(
+                "CUSTOMER HUMAN ESCALATION",
+                flush=True,
+            )
+            print(
+                "=================================",
+                flush=True,
+            )
+            print(
+                "Member:",
+                member_id,
+                flush=True,
+            )
+            print(
+                "Task:",
+                task,
+                flush=True,
+            )
+            print(
+                "Human escalation required.",
+                flush=True,
+            )
+
+            self.send_json(
+                {
+                    "success":
+                        False,
+
+                    "member_id":
+                        member_id,
+
+                    "answer": (
+                        "Your request has been "
+                        "escalated for human review. "
+                        "A human support representative "
+                        "is required to continue."
+                    ),
+
+                    "mode":
+                        "escalated",
+
+                    "capability_name":
+                        None,
+
+                    "llm_used":
+                        False,
+
+                    "human_escalation": {
+                        "required":
+                            True,
+
+                        "status":
+                            "pending_human_review",
+
+                        "reason":
+                            "Customer explicitly requested human assistance.",
+
+                        "member_id":
+                            member_id,
+
+                        "customer_request":
+                            task,
+                    },
+                },
+                200,
+            )
+            return
+
+        # ====================================================
+        # CAPABILITY CLASSIFICATION
+        # ====================================================
+
         capability_name = (
             classify_customer_capability(
                 task
@@ -1267,26 +1417,69 @@ class PortalHandler(
             )
             return
 
+        # ====================================================
+        # DISCOVERY SAFETY / FAILURE ESCALATION
+        # ====================================================
+        #
+        # If discovery cannot safely complete, do not expose
+        # an internal-looking failure to the customer.
+        #
+        # Convert the failure into a human-review state.
+        # ====================================================
+
+        discovery_error = (
+            result.get(
+                "error"
+            )
+            or
+            "The member assistant could "
+            "not safely complete the request."
+        )
+
         self.send_json(
             {
                 "success":
                     False,
+
                 "member_id":
                     member_id,
+
+                "answer": (
+                    "I couldn't safely complete that "
+                    "request automatically. It has been "
+                    "escalated for human review."
+                ),
+
                 "mode":
-                    "discovery",
+                    "escalated",
+
                 "capability_name":
                     capability_name,
-                "error": (
-                    result.get(
-                        "error"
-                    )
-                    or
-                    "The member assistant could "
-                    "not complete the request."
-                ),
+
+                "llm_used":
+                    True,
+
+                "error":
+                    discovery_error,
+
+                "human_escalation": {
+                    "required":
+                        True,
+
+                    "status":
+                        "pending_human_review",
+
+                    "reason":
+                        discovery_error,
+
+                    "member_id":
+                        member_id,
+
+                    "customer_request":
+                        task,
+                },
             },
-            422,
+            200,
         )
 
     # ========================================================
