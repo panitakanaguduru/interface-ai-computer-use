@@ -5,6 +5,30 @@ import re
 import sys
 import traceback
 
+# ============================================================
+# PLAYWRIGHT / RENDER CONFIG
+# ============================================================
+#
+# Render installs the Playwright Chromium binaries into this
+# directory during the build:
+#
+# /opt/render/project/.playwright
+#
+# Playwright normally looks in ~/.cache/ms-playwright.
+# Setting this before importing browser_agent/replay_engine
+# makes runtime Playwright use the same location as the build.
+#
+# Local development is unaffected because setdefault() respects
+# an already configured PLAYWRIGHT_BROWSERS_PATH. On Render,
+# this points Playwright to the browser installed at build time.
+# ============================================================
+
+if os.getenv("RENDER"):
+    os.environ.setdefault(
+        "PLAYWRIGHT_BROWSERS_PATH",
+        "/opt/render/project/.playwright",
+    )
+
 from http.server import (
     SimpleHTTPRequestHandler,
     ThreadingHTTPServer,
@@ -733,11 +757,6 @@ class PortalHandler(
             )
             return
 
-        # Database is used ONLY to verify
-        # that the member session exists.
-        #
-        # It is NOT used to calculate the
-        # pending claims answer.
         member = get_member(
             member_id
         )
@@ -787,25 +806,31 @@ class PortalHandler(
         )
 
         print(
-            "\n================================="
+            "\n=================================",
+            flush=True,
         )
         print(
-            "CUSTOMER AGENT REQUEST"
+            "CUSTOMER AGENT REQUEST",
+            flush=True,
         )
         print(
-            "================================="
+            "=================================",
+            flush=True,
         )
         print(
             "Member:",
             member_id,
+            flush=True,
         )
         print(
             "Task:",
             task,
+            flush=True,
         )
         print(
             "Capability:",
             capability_name,
+            flush=True,
         )
 
         # ====================================================
@@ -829,16 +854,8 @@ class PortalHandler(
                 print(
                     "Saved capability:",
                     artifact_id,
+                    flush=True,
                 )
-
-                # --------------------------------------------
-                # IMPORTANT:
-                # Once a saved capability exists, this request
-                # enters the deterministic replay path.
-                #
-                # If replay fails, this request MUST NOT fall
-                # through to LLM discovery.
-                # --------------------------------------------
 
                 try:
                     replay_result = (
@@ -854,8 +871,22 @@ class PortalHandler(
 
                 except Exception as error:
                     print(
-                        "Replay runtime error:",
-                        error,
+                        "\n========== REPLAY ERROR ==========",
+                        flush=True,
+                    )
+                    print(
+                        f"Error type: "
+                        f"{type(error).__name__}",
+                        flush=True,
+                    )
+                    print(
+                        f"Error message: {error}",
+                        flush=True,
+                    )
+                    traceback.print_exc()
+                    print(
+                        "==================================\n",
+                        flush=True,
                     )
 
                     self.send_json(
@@ -901,10 +932,6 @@ class PortalHandler(
                         409,
                     )
                     return
-
-                # --------------------------------------------
-                # SUCCESS / RECOVERED SUCCESS
-                # --------------------------------------------
 
                 if replay_result.get(
                     "success"
@@ -983,8 +1010,6 @@ class PortalHandler(
                         )
                         return
 
-                    # Replay technically completed but did not
-                    # produce a trusted browser-derived answer.
                     self.send_json(
                         {
                             "success":
@@ -1040,23 +1065,6 @@ class PortalHandler(
                         409,
                     )
                     return
-
-                # --------------------------------------------
-                # CRITICAL FAILURE BOUNDARY
-                # --------------------------------------------
-                #
-                # Artifact existed.
-                # Replay failed.
-                #
-                # THIS IS TERMINAL FOR AUTOMATION.
-                #
-                # Do NOT:
-                # - call run_agent()
-                # - rediscover with an LLM
-                # - create a replacement artifact
-                #
-                # Escalate instead.
-                # --------------------------------------------
 
                 escalation = (
                     replay_result.get(
@@ -1163,24 +1171,10 @@ class PortalHandler(
                     },
                     409,
                 )
-
-                # THIS RETURN IS CRITICAL.
-                #
-                # It prevents the discovery block below
-                # from ever running after an existing
-                # artifact failed.
                 return
 
         # ====================================================
         # DISCOVERY
-        # ====================================================
-        #
-        # Discovery is allowed ONLY when:
-        #
-        # 1. no reusable artifact exists, OR
-        # 2. capability is not yet known.
-        #
-        # A failed replay can NEVER reach this block.
         # ====================================================
 
         authorized_task = (
@@ -1191,10 +1185,12 @@ class PortalHandler(
         )
 
         print(
-            "No reusable capability."
+            "No reusable capability.",
+            flush=True,
         )
         print(
-            "Starting discovery."
+            "Starting discovery.",
+            flush=True,
         )
 
         try:
@@ -1328,8 +1324,21 @@ class PortalHandler(
 
         except Exception as error:
             print(
-                "Operations agent error:",
-                error,
+                "\n========== OPERATIONS AGENT ERROR ==========",
+                flush=True,
+            )
+            print(
+                f"Error type: {type(error).__name__}",
+                flush=True,
+            )
+            print(
+                f"Error message: {error}",
+                flush=True,
+            )
+            traceback.print_exc()
+            print(
+                "============================================\n",
+                flush=True,
             )
 
             self.send_json(
