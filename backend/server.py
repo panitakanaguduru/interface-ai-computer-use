@@ -1495,6 +1495,46 @@ class PortalHandler(
             )
             return
 
+        # ====================================================
+        # EXPECTED BUSINESS OUTCOME: MEMBER NOT FOUND
+        # ====================================================
+
+        referenced_member_ids = re.findall(
+            r"\b\d{3,5}\b",
+            task,
+        )
+
+        if len(referenced_member_ids) == 1:
+            requested_member_id = (
+                referenced_member_ids[0]
+            )
+
+            member = get_member(
+                requested_member_id
+            )
+
+            if member is None:
+                self.send_json(
+                    {
+                        "success": True,
+                        "task": task,
+                        "answer": (
+                            f"No member was found with ID "
+                            f"{requested_member_id}."
+                        ),
+                        "outcome":
+                            "member_not_found",
+                        "member_id":
+                            requested_member_id,
+                        "steps": [],
+                        "actions": [],
+                        "action_count": 0,
+                        "artifact_id": None,
+                        "artifact_file": None,
+                    },
+                    200,
+                )
+                return
         try:
             result = run_agent(
                 task,
