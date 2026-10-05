@@ -3,6 +3,7 @@ import mimetypes
 import os
 import re
 import sys
+import traceback
 
 from http.server import (
     SimpleHTTPRequestHandler,
@@ -1208,8 +1209,21 @@ class PortalHandler(
 
         except Exception as error:
             print(
-                "Discovery error:",
-                error,
+                "\n========== DISCOVERY ERROR ==========",
+                flush=True,
+            )
+            print(
+                f"Error type: {type(error).__name__}",
+                flush=True,
+            )
+            print(
+                f"Error message: {error}",
+                flush=True,
+            )
+            traceback.print_exc()
+            print(
+                "=====================================\n",
+                flush=True,
             )
 
             self.send_json(
