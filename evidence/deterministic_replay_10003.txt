@@ -1,0 +1,109 @@
+
+==============================
+DETERMINISTIC CAPABILITY REPLAY
+==============================
+Artifact: artifact_20261004_231554_044486
+Capability: pending_claims_lookup
+LLM used: False
+Human intervention enabled: False
+Headless: True
+[REPLAY] Step 1/2
+[REPLAY] Step 2/2
+
+==============================
+REPLAY RESULT
+==============================
+{
+  "success": true,
+  "mode": "replay",
+  "artifact_id": "artifact_20261004_231554_044486",
+  "capability_name": "pending_claims_lookup",
+  "steps_executed": 2,
+  "actions": [
+    {
+      "action": "fill",
+      "selector": "#member-id",
+      "value": "10003"
+    },
+    {
+      "action": "click",
+      "selector": "#search-button"
+    }
+  ],
+  "recovery_attempted": false,
+  "recovery_succeeded": false,
+  "recovery_events": [],
+  "human_escalation": {
+    "required": false
+  },
+  "checkpoint": {
+    "success": true,
+    "type": "pending_claims_result",
+    "message": "Pending claims result was verified from the rendered browser DOM.",
+    "evidence": {
+      "url": "http://localhost:8000/",
+      "member_id": "10003",
+      "rendered_member_id": "10003",
+      "member_visible": true,
+      "claims_container_present": true,
+      "empty_state_text": null,
+      "body_text": "MemberOps\nAI Operations\n⌂\nWorkspace\n◎\nMembers\n↗\nTransactions\n◇\nClaims\nAgent online\n\nBrowser agent, safety layer and member database connected.\n\nDemo environment\n100 members\n\nMEMBER OPERATIONS PORTAL\n\nOperations workspace\nConnected\nOP\nMemberOps Agent\nLIVE\n\nAsk the agent to investigate member activity using the operations portal.\n\nReady\nRun agent\n↗\nTry\nLargest transaction\nPending claims\nTransactions over $1,500\n01\nMember lookup\nDemo IDs: 10001 through 10100\nMember ID\nSearch member\nMember loaded.\nCURRENT CONTEXT\nMichael Brown\nInactive\n\nMember 10003. 1 accounts, 9 transactions, 1 claims.\n\nMB\nMichael Brown\nINACTIVE\nMember 10003\nEmail\nmichael.brown3@example.com\nPhone\n555-103-1003\nDate of birth\n1992-11-15\nAccounts\n1\nView accounts →\nTransactions\n9\nReview activity →\nClaims\n1\nReview claims →\n02\nAccounts\nChecking\nOpen\nA100031\n$9,772.99\n03\nTransactions\nAll\nLargest\nCredits\nDebits\nDATE\nACCOUNT\nMERCHANT\nTYPE\nAMOUNT\n2026-08-25\nA100031\nGreen Grocery\nDebit\n$1,908.65\n2026-08-24\nA100031\nCentral Gas\nDebit\n$18.08\n2026-07-03\nA100031\nTech World\nDebit\n$606.24\n2026-06-06\nA100031\nHome Supply\nDebit\n$636.02\n2026-05-28\nA100031\nCity Utilities\nDebit\n$1,274.13\n2026-05-03\nA100031\nGreen Grocery\nDebit\n$1,226.63\n2026-04-26\nA100031\nTech World\nDebit\n$2,105.76\n2026-04-22\nA100031\nGreen Grocery\nCredit\n$287.76\n2026-04-12\nA100031\nMetro Pharmacy\nDebit\n$1,707.46\n04\nClaims\nAll\nPending\nC00006\nApproved\nDate\n2026-08-21\nProvider\n—\nAmount\n$5,882.07",
+      "body_text_length": 1420,
+      "browser_output": {
+        "member_id": "10003",
+        "claim_statuses": [
+          "Approved"
+        ],
+        "total_claims": 1,
+        "pending_claim_count": 0,
+        "source": "browser_dom"
+      }
+    },
+    "browser_output": {
+      "member_id": "10003",
+      "claim_statuses": [
+        "Approved"
+      ],
+      "total_claims": 1,
+      "pending_claim_count": 0,
+      "source": "browser_dom"
+    },
+    "output_source": "browser_dom"
+  },
+  "evidence": {
+    "url": "http://localhost:8000/",
+    "member_id": "10003",
+    "rendered_member_id": "10003",
+    "member_visible": true,
+    "claims_container_present": true,
+    "empty_state_text": null,
+    "body_text": "MemberOps\nAI Operations\n⌂\nWorkspace\n◎\nMembers\n↗\nTransactions\n◇\nClaims\nAgent online\n\nBrowser agent, safety layer and member database connected.\n\nDemo environment\n100 members\n\nMEMBER OPERATIONS PORTAL\n\nOperations workspace\nConnected\nOP\nMemberOps Agent\nLIVE\n\nAsk the agent to investigate member activity using the operations portal.\n\nReady\nRun agent\n↗\nTry\nLargest transaction\nPending claims\nTransactions over $1,500\n01\nMember lookup\nDemo IDs: 10001 through 10100\nMember ID\nSearch member\nMember loaded.\nCURRENT CONTEXT\nMichael Brown\nInactive\n\nMember 10003. 1 accounts, 9 transactions, 1 claims.\n\nMB\nMichael Brown\nINACTIVE\nMember 10003\nEmail\nmichael.brown3@example.com\nPhone\n555-103-1003\nDate of birth\n1992-11-15\nAccounts\n1\nView accounts →\nTransactions\n9\nReview activity →\nClaims\n1\nReview claims →\n02\nAccounts\nChecking\nOpen\nA100031\n$9,772.99\n03\nTransactions\nAll\nLargest\nCredits\nDebits\nDATE\nACCOUNT\nMERCHANT\nTYPE\nAMOUNT\n2026-08-25\nA100031\nGreen Grocery\nDebit\n$1,908.65\n2026-08-24\nA100031\nCentral Gas\nDebit\n$18.08\n2026-07-03\nA100031\nTech World\nDebit\n$606.24\n2026-06-06\nA100031\nHome Supply\nDebit\n$636.02\n2026-05-28\nA100031\nCity Utilities\nDebit\n$1,274.13\n2026-05-03\nA100031\nGreen Grocery\nDebit\n$1,226.63\n2026-04-26\nA100031\nTech World\nDebit\n$2,105.76\n2026-04-22\nA100031\nGreen Grocery\nCredit\n$287.76\n2026-04-12\nA100031\nMetro Pharmacy\nDebit\n$1,707.46\n04\nClaims\nAll\nPending\nC00006\nApproved\nDate\n2026-08-21\nProvider\n—\nAmount\n$5,882.07",
+    "body_text_length": 1420,
+    "browser_output": {
+      "member_id": "10003",
+      "claim_statuses": [
+        "Approved"
+      ],
+      "total_claims": 1,
+      "pending_claim_count": 0,
+      "source": "browser_dom"
+    }
+  },
+  "output_source": "browser_dom",
+  "browser_output": {
+    "member_id": "10003",
+    "claim_statuses": [
+      "Approved"
+    ],
+    "total_claims": 1,
+    "pending_claim_count": 0,
+    "source": "browser_dom"
+  },
+  "human_intervention": {
+    "used": false,
+    "transferred": false,
+    "resumed": false
+  },
+  "intervention_id": null,
+  "llm_used": false
+}

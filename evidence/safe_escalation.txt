@@ -1,0 +1,81 @@
+
+==============================
+DETERMINISTIC CAPABILITY REPLAY
+==============================
+Artifact: artifact_20261004_231554_044486
+Capability: pending_claims_lookup
+LLM used: False
+Human intervention enabled: False
+Headless: True
+[REPLAY] Step 1/2
+[REPLAY] Step 2/2
+[TEST] Simulating stale selector at step 2.
+[FAILURE] Step 2: Locator.click: Timeout 3000ms exceeded.
+Call log:
+  - waiting for locator("#search-button-broken")
+
+[RECOVERY] Failed.
+
+==============================
+REPLAY RESULT
+==============================
+{
+  "success": false,
+  "mode": "escalated",
+  "artifact_id": "artifact_20261004_231554_044486",
+  "capability_name": "pending_claims_lookup",
+  "error": "Recorded capability could not be safely replayed.",
+  "failed_step": 2,
+  "failed_action": {
+    "action": "click",
+    "selector": "#search-button-broken"
+  },
+  "steps_executed": 1,
+  "recovery_attempted": true,
+  "recovery_succeeded": false,
+  "recovery_events": [
+    {
+      "step": 2,
+      "action": {
+        "action": "click",
+        "selector": "#search-button-broken"
+      },
+      "attempted": true,
+      "success": false,
+      "plan": {
+        "allowed": true,
+        "step_number": 2,
+        "action_type": "click",
+        "original_selector": "#search-button-broken",
+        "reason": "Browser action timed out.",
+        "error_type": "browser_timeout"
+      },
+      "strategy": null,
+      "original_selector": "#search-button-broken",
+      "error": "Recovery failure was intentionally simulated for testing.",
+      "simulated": true
+    }
+  ],
+  "human_escalation": {
+    "required": true,
+    "status": "human_review_required",
+    "created_at": "2026-10-05T00:21:28.400742+00:00",
+    "artifact_id": "artifact_20261004_231554_044486",
+    "capability_name": "pending_claims_lookup",
+    "failed_step": 2,
+    "failed_action": {
+      "action": "click",
+      "selector": "#search-button-broken"
+    },
+    "reason": "Recorded capability could not be safely replayed.",
+    "recovery_attempted": true,
+    "recovery_error": "Recovery failure was intentionally simulated for testing.",
+    "recommended_action": "Review the saved capability and the current UI before approving a new workflow."
+  },
+  "human_intervention": {
+    "used": false,
+    "transferred": false,
+    "resumed": false
+  },
+  "llm_used": false
+}

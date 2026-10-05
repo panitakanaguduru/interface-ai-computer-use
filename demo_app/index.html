@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>MemberOps — AI Operations Workspace</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- ========================================
+         SIDEBAR
+    ========================================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    MemberOps
+                </div>
+
+                <div class="brand-caption">
+                    AI Operations
+                </div>
+            </div>
+        </div>
+
+        <nav class="nav">
+
+            <button class="nav-item active">
+                <span class="nav-icon">⌂</span>
+                Workspace
+            </button>
+
+            <button
+                class="nav-item"
+                id="nav-members"
+            >
+                <span class="nav-icon">◎</span>
+                Members
+            </button>
+
+            <button
+                class="nav-item"
+                id="nav-transactions"
+            >
+                <span class="nav-icon">↗</span>
+                Transactions
+            </button>
+
+            <button
+                class="nav-item"
+                id="nav-claims"
+            >
+                <span class="nav-icon">◇</span>
+                Claims
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="system-card">
+                <div class="system-card-top">
+                    <span class="live-dot"></span>
+                    Agent online
+                </div>
+
+                <p>
+                    Browser agent, safety layer
+                    and member database connected.
+                </p>
+            </div>
+
+            <div class="environment">
+                <span>Demo environment</span>
+                <strong>100 members</strong>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ========================================
+         MAIN
+    ========================================= -->
+
+    <main class="main">
+
+        <!-- Header -->
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">
+                    MEMBER OPERATIONS PORTAL
+                </p>
+
+                <h1>
+                    Operations workspace
+                </h1>
+            </div>
+
+            <div class="topbar-actions">
+
+                <div
+                    class="backend-status"
+                    id="backend-status"
+                >
+                    <span class="status-dot"></span>
+                    Connected
+                </div>
+
+                <div class="operator-avatar">
+                    OP
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ====================================
+             AI COMMAND CENTER
+        ===================================== -->
+
+        <section class="agent-panel">
+
+            <div class="agent-panel-header">
+
+                <div class="agent-title">
+
+                    <div class="agent-orb">
+                        <div class="agent-orb-core"></div>
+                    </div>
+
+                    <div>
+                        <div class="agent-heading-row">
+                            <h2>MemberOps Agent</h2>
+
+                            <span class="agent-badge">
+                                LIVE
+                            </span>
+                        </div>
+
+                        <p>
+                            Ask the agent to investigate
+                            member activity using the
+                            operations portal.
+                        </p>
+                    </div>
+
+                </div>
+
+                <div
+                    class="agent-state"
+                    id="agent-state"
+                    data-state="ready"
+                >
+                    <span></span>
+                    Ready
+                </div>
+
+            </div>
+
+
+            <form
+                class="agent-command"
+                id="agent-form"
+            >
+
+                <textarea
+                    id="agent-input"
+                    rows="1"
+                    placeholder="Ask MemberOps to investigate something..."
+                    autocomplete="off"
+                ></textarea>
+
+                <button
+                    type="submit"
+                    id="agent-submit"
+                    class="agent-submit"
+                >
+                    <span>Run agent</span>
+                    <span class="submit-arrow">↗</span>
+                </button>
+
+            </form>
+
+
+            <div class="suggestions">
+
+                <span class="suggestion-label">
+                    Try
+                </span>
+
+                <button
+                    class="suggestion"
+                    data-task="Find member 10002 and tell me their largest transaction."
+                >
+                    Largest transaction
+                </button>
+
+                <button
+                    class="suggestion"
+                    data-task="Find member 10002 and tell me how many pending claims they have."
+                >
+                    Pending claims
+                </button>
+
+                <button
+                    class="suggestion"
+                    data-task="Find member 10002 and list all transactions over $1,500."
+                >
+                    Transactions over $1,500
+                </button>
+
+            </div>
+
+
+            <!-- Agent Progress -->
+
+            <div
+                class="agent-progress hidden"
+                id="agent-progress"
+            >
+
+                <div class="progress-line">
+                    <div
+                        class="progress-fill"
+                        id="progress-fill"
+                    ></div>
+                </div>
+
+                <div class="progress-steps">
+
+                    <div
+                        class="progress-step"
+                        id="progress-observe"
+                    >
+                        <span>1</span>
+                        Observe
+                    </div>
+
+                    <div
+                        class="progress-step"
+                        id="progress-plan"
+                    >
+                        <span>2</span>
+                        Plan
+                    </div>
+
+                    <div
+                        class="progress-step"
+                        id="progress-act"
+                    >
+                        <span>3</span>
+                        Act
+                    </div>
+
+                    <div
+                        class="progress-step"
+                        id="progress-complete"
+                    >
+                        <span>4</span>
+                        Complete
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Agent Result -->
+
+            <div
+                class="agent-result hidden"
+                id="agent-result"
+            >
+
+                <div class="result-header">
+
+                    <div class="result-icon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <span class="result-label">
+                            AGENT RESPONSE
+                        </span>
+
+                        <h3>
+                            Investigation complete
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div
+                    class="agent-answer"
+                    id="agent-answer"
+                ></div>
+
+                <div class="agent-meta">
+
+                    <div>
+                        <span>Steps</span>
+                        <strong id="result-steps">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Browser actions</span>
+                        <strong id="result-actions">—</strong>
+                    </div>
+
+                    <div>
+                        <span>Safety</span>
+                        <strong>Passed</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Agent Error -->
+
+            <div
+                class="agent-error hidden"
+                id="agent-error"
+            >
+                <div class="error-icon">!</div>
+
+                <div>
+                    <strong>
+                        Agent couldn't complete the task
+                    </strong>
+
+                    <p id="agent-error-message">
+                        Something went wrong.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ====================================
+             MEMBER LOOKUP
+        ===================================== -->
+
+        <section
+            class="workspace-grid"
+            id="member-workspace"
+        >
+
+            <div class="lookup-card">
+
+                <div class="section-heading">
+
+                    <div>
+                        <span class="section-number">
+                            01
+                        </span>
+
+                        <h2>
+                            Member lookup
+                        </h2>
+                    </div>
+
+                    <span class="section-hint">
+                        Demo IDs: 10001 through 10100
+                    </span>
+
+                </div>
+
+
+                <div class="lookup-row">
+
+                    <div class="input-wrapper">
+
+                        <label for="member-id">
+                            Member ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="member-id"
+                            placeholder="e.g. 10002"
+                            inputmode="numeric"
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                    <button
+                        id="search-button"
+                        class="primary-button"
+                        type="button"
+                    >
+                        Search member
+                    </button>
+
+                </div>
+
+                <div
+                    class="lookup-message"
+                    id="lookup-message"
+                ></div>
+
+            </div>
+
+
+            <!-- Overview Card -->
+
+            <div class="overview-card">
+
+                <div class="overview-top">
+
+                    <div>
+                        <span class="small-label">
+                            CURRENT CONTEXT
+                        </span>
+
+                        <h3 id="context-title">
+                            No member selected
+                        </h3>
+                    </div>
+
+                    <span
+                        class="context-status"
+                        id="context-status"
+                    >
+                        —
+                    </span>
+
+                </div>
+
+                <p id="context-copy">
+                    Search for a member manually or
+                    ask the agent to investigate one.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ====================================
+             MEMBER RESULTS
+        ===================================== -->
+
+        <section
+            id="member-results"
+            class="member-results hidden"
+        >
+
+            <!-- Member header -->
+
+            <div class="member-profile">
+
+                <div class="member-profile-main">
+
+                    <div
+                        class="member-avatar"
+                        id="member-initials"
+                    >
+                        —
+                    </div>
+
+                    <div>
+                        <div class="member-name-row">
+
+                            <h2 id="member-name">
+                                Member
+                            </h2>
+
+                            <span
+                                class="member-status"
+                                id="member-active-status"
+                            >
+                                Active
+                            </span>
+
+                        </div>
+
+                        <div class="member-subtitle">
+                            Member
+                            <strong id="member-number">
+                                —
+                            </strong>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="member-contact">
+
+                    <div>
+                        <span>Email</span>
+                        <strong id="member-email">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Phone</span>
+                        <strong id="member-phone">
+                            —
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>Date of birth</span>
+                        <strong id="member-dob">
+                            —
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Stats -->
+
+            <div class="stats-grid">
+
+                <button
+                    class="stat-card"
+                    data-target="accounts-section"
+                >
+                    <span class="stat-label">
+                        Accounts
+                    </span>
+
+                    <strong id="account-count">
+                        0
+                    </strong>
+
+                    <span class="stat-link">
+                        View accounts →
+                    </span>
+                </button>
+
+                <button
+                    class="stat-card"
+                    data-target="transactions-section"
+                >
+                    <span class="stat-label">
+                        Transactions
+                    </span>
+
+                    <strong id="transaction-count">
+                        0
+                    </strong>
+
+                    <span class="stat-link">
+                        Review activity →
+                    </span>
+                </button>
+
+                <button
+                    class="stat-card"
+                    data-target="claims-section"
+                >
+                    <span class="stat-label">
+                        Claims
+                    </span>
+
+                    <strong id="claim-count">
+                        0
+                    </strong>
+
+                    <span class="stat-link">
+                        Review claims →
+                    </span>
+                </button>
+
+            </div>
+
+
+            <!-- Accounts -->
+
+            <section
+                class="data-section"
+                id="accounts-section"
+            >
+
+                <div class="data-section-header">
+
+                    <div>
+                        <span class="section-number">
+                            02
+                        </span>
+
+                        <h2>
+                            Accounts
+                        </h2>
+                    </div>
+
+                </div>
+
+                <div
+                    class="accounts-grid"
+                    id="accounts-container"
+                ></div>
+
+            </section>
+
+
+            <!-- Transactions -->
+
+            <section
+                class="data-section"
+                id="transactions-section"
+            >
+
+                <div class="data-section-header">
+
+                    <div>
+                        <span class="section-number">
+                            03
+                        </span>
+
+                        <h2>
+                            Transactions
+                        </h2>
+                    </div>
+
+                    <div class="filters">
+
+                        <button
+                            class="filter-button active"
+                            data-transaction-filter="all"
+                        >
+                            All
+                        </button>
+
+                        <button
+                            class="filter-button"
+                            data-transaction-filter="largest"
+                        >
+                            Largest
+                        </button>
+
+                        <button
+                            class="filter-button"
+                            data-transaction-filter="credit"
+                        >
+                            Credits
+                        </button>
+
+                        <button
+                            class="filter-button"
+                            data-transaction-filter="debit"
+                        >
+                            Debits
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-shell">
+
+                    <div class="table-header">
+                        <span>Date</span>
+                        <span>Account</span>
+                        <span>Merchant</span>
+                        <span>Type</span>
+                        <span>Amount</span>
+                    </div>
+
+                    <div
+                        id="transactions-container"
+                        class="transactions-container"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Claims -->
+
+            <section
+                class="data-section"
+                id="claims-section"
+            >
+
+                <div class="data-section-header">
+
+                    <div>
+                        <span class="section-number">
+                            04
+                        </span>
+
+                        <h2>
+                            Claims
+                        </h2>
+                    </div>
+
+                    <div class="filters">
+
+                        <button
+                            class="filter-button active"
+                            data-claim-filter="all"
+                        >
+                            All
+                        </button>
+
+                        <button
+                            class="filter-button"
+                            data-claim-filter="pending"
+                        >
+                            Pending
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="claims-container"
+                    class="claims-grid"
+                ></div>
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>MemberOps — Your Member Assistant</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Patrick+Hand&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="./style.css"
+  />
+
+  <!--
+    Only the new demo identity card needs extra styling.
+    The rest of the site continues using your existing CSS.
+  -->
+  <style>
+    .member-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background:
+        radial-gradient(
+          circle at 1px 1px,
+          rgba(20, 20, 20, 0.12) 1px,
+          transparent 1.4px
+        );
+      background-size: 22px 22px;
+      background-color: #f5f1e8;
+    }
+
+    .member-gate.visible {
+      display: flex;
+    }
+
+    .member-gate-card {
+      position: relative;
+      width: min(440px, 100%);
+      padding: 38px 34px 32px;
+      background: #fffdf6;
+      border: 3px solid #151515;
+      border-radius: 8px;
+      box-shadow: 9px 10px 0 #151515;
+      transform: rotate(-0.7deg);
+      text-align: left;
+    }
+
+    .member-gate-tape {
+      position: absolute;
+      width: 105px;
+      height: 29px;
+      top: -17px;
+      left: 50%;
+      transform:
+        translateX(-50%)
+        rotate(2deg);
+      background: rgba(255, 220, 80, 0.82);
+    }
+
+    .member-gate-note {
+      margin-bottom: 5px;
+      font-family: "Patrick Hand", cursive;
+      font-size: 23px;
+      transform: rotate(-1deg);
+    }
+
+    .member-gate-card h2 {
+      margin: 0 0 10px;
+      font-family: "DM Sans", sans-serif;
+      font-size: clamp(28px, 5vw, 39px);
+      line-height: 1;
+      letter-spacing: -1.5px;
+    }
+
+    .member-gate-card p {
+      margin: 0 0 24px;
+      color: #525252;
+      font-family: "DM Sans", sans-serif;
+      line-height: 1.55;
+    }
+
+    .member-id-label {
+      display: block;
+      margin-bottom: 8px;
+      font-family: "Patrick Hand", cursive;
+      font-size: 20px;
+    }
+
+    .member-id-input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 15px 17px;
+      border: 2px solid #151515;
+      border-radius: 8px;
+      outline: none;
+      background: #fff;
+      font-family: "DM Sans", sans-serif;
+      font-size: 17px;
+    }
+
+    .member-id-input:focus {
+      box-shadow: 4px 4px 0 #f5d94e;
+    }
+
+    .member-gate-error {
+      min-height: 22px;
+      margin: 9px 0 3px;
+      color: #b42318;
+      font-family: "DM Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .member-continue {
+      width: 100%;
+      margin-top: 8px;
+      padding: 14px 18px;
+      border: 2px solid #151515;
+      border-radius: 8px;
+      background: #f5d94e;
+      color: #151515;
+      cursor: pointer;
+      font-family: "DM Sans", sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 4px 4px 0 #151515;
+      transition:
+        transform 120ms ease,
+        box-shadow 120ms ease;
+    }
+
+    .member-continue:hover {
+      transform:
+        translate(2px, 2px);
+      box-shadow: 2px 2px 0 #151515;
+    }
+
+    .member-continue:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    .member-demo-copy {
+      margin-top: 18px;
+      font-family: "Patrick Hand", cursive;
+      font-size: 17px;
+      color: #686868;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =====================================================
+       WELCOME
+       ===================================================== -->
+
+  <section
+    id="welcome-screen"
+    class="welcome-screen"
+  >
+
+    <div class="paper-grid"></div>
+
+    <div
+      id="hello-cloud"
+      class="hello-cloud"
+    >
+      <span class="hello h1">Hello!</span>
+      <span class="hello h2">Hola!</span>
+      <span class="hello h3">Bonjour!</span>
+      <span class="hello h4">నమస్కారం!</span>
+      <span class="hello h5">नमस्ते!</span>
+      <span class="hello h6">こんにちは!</span>
+      <span class="hello h7">안녕하세요!</span>
+      <span class="hello h8">Ciao!</span>
+      <span class="hello h9">Olá!</span>
+      <span class="hello h10">你好!</span>
+    </div>
+
+    <div class="welcome-stage">
+
+      <div
+        id="welcome-agent"
+        class="agent"
+      >
+
+        <div class="antenna">
+          <span></span>
+        </div>
+
+        <div class="agent-head">
+
+          <div class="eye eye-left">
+            <span class="pupil"></span>
+          </div>
+
+          <div class="eye eye-right">
+            <span class="pupil"></span>
+          </div>
+
+          <div class="agent-mouth"></div>
+
+        </div>
+
+        <div class="agent-body">
+          <span>✦</span>
+        </div>
+
+        <div class="arm arm-left"></div>
+        <div class="arm arm-right"></div>
+
+      </div>
+
+      <div
+        id="welcome-message"
+        class="welcome-message"
+      >
+
+        <div class="scribble-text">
+          oh, hey.
+        </div>
+
+        <h1>
+          I'm your
+          <span class="marker">
+            MemberOps
+          </span>
+          agent.
+        </h1>
+
+        <p>
+          Ask me about your account, claims,
+          spending, or activity.
+        </p>
+
+        <button
+          id="enter-chat"
+          class="enter-chat"
+        >
+          let's chat
+          <span>→</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="welcome-doodle doodle-one">
+      <span>↗</span>
+      ask me anything
+    </div>
+
+    <div class="welcome-doodle doodle-two">
+      no digging through menus :)
+    </div>
+
+    <div class="welcome-doodle doodle-three">
+      ✦ your account, but easier
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       DEMO MEMBER IDENTIFICATION
+       ===================================================== -->
+
+  <section
+    id="member-gate"
+    class="member-gate"
+    aria-hidden="true"
+  >
+
+    <div class="member-gate-card">
+
+      <div class="member-gate-tape"></div>
+
+      <div class="member-gate-note">
+        one tiny thing first ↓
+      </div>
+
+      <h2>
+        let's find your account.
+      </h2>
+
+      <p>
+        Enter a demo member ID to start your secure
+        MemberOps session.
+      </p>
+
+      <form id="member-form">
+
+        <label
+          class="member-id-label"
+          for="customer-member-id"
+        >
+          member ID
+        </label>
+
+        <input
+          id="customer-member-id"
+          class="member-id-input"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="e.g. 10004"
+          aria-describedby="member-gate-error"
+        />
+
+        <div
+          id="member-gate-error"
+          class="member-gate-error"
+          role="alert"
+        ></div>
+
+        <button
+          id="member-continue"
+          class="member-continue"
+          type="submit"
+        >
+          continue →
+        </button>
+
+      </form>
+
+      <div class="member-demo-copy">
+        demo IDs: 10001–10100
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       CHAT APPLICATION
+       ===================================================== -->
+
+  <main
+    id="chat-app"
+    class="chat-app"
+  >
+
+    <header class="chat-header">
+
+      <button
+        id="home-button"
+        class="brand"
+      >
+
+        <span class="brand-face">
+          <span></span>
+          <span></span>
+        </span>
+
+        <span class="brand-copy">
+          <strong>MemberOps</strong>
+          <small>your member assistant</small>
+        </span>
+
+      </button>
+
+      <div class="header-right">
+
+        <div class="secure-session">
+          <span></span>
+          secure session
+        </div>
+
+        <div class="tiny-doodle">
+          you're in good hands ↘
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <section
+      id="conversation"
+      class="conversation"
+    >
+
+      <div
+        id="start-state"
+        class="start-state"
+      >
+
+        <div class="chat-agent">
+
+          <div class="chat-agent-antenna"></div>
+
+          <div class="chat-agent-head">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="chat-agent-body">
+            ✦
+          </div>
+
+        </div>
+
+        <div class="start-copy">
+
+          <div class="handwritten">
+            hey — what can I help with?
+          </div>
+
+          <h2>
+            Ask me about
+            <span id="changing-word">
+              your account.
+            </span>
+          </h2>
+
+          <p>
+            I'll look through the details and bring
+            back only what matters.
+          </p>
+
+        </div>
+
+        <div class="suggestion-cloud">
+
+          <button
+            class="suggestion suggestion-yellow"
+            data-question="What was my largest transaction?"
+          >
+            <span>↗</span>
+            biggest transaction
+          </button>
+
+          <button
+            class="suggestion suggestion-pink"
+            data-question="How many pending claims do I have?"
+          >
+            <span>✓</span>
+            pending claims
+          </button>
+
+          <button
+            class="suggestion suggestion-green"
+            data-question="Show my transactions over $1,500."
+          >
+            <span>$</span>
+            spending over $1,500
+          </button>
+
+          <button
+            class="suggestion suggestion-purple"
+            data-question="Tell me about my accounts."
+          >
+            <span>◫</span>
+            my accounts
+          </button>
+
+        </div>
+
+      </div>
+
+      <div
+        id="messages"
+        class="messages"
+      ></div>
+
+    </section>
+
+
+    <!-- ===================================================
+         COMPOSER
+         =================================================== -->
+
+    <div class="composer-wrap">
+
+      <div
+        id="composer-note"
+        class="composer-note"
+      >
+        type like you're texting me ↓
+      </div>
+
+      <div class="composer">
+
+        <textarea
+          id="chat-input"
+          rows="1"
+          placeholder="Ask me anything about your account..."
+          aria-label="Ask MemberOps"
+        ></textarea>
+
+        <button
+          id="send-button"
+          class="send-button"
+          aria-label="Send message"
+        >
+          ↑
+        </button>
+
+      </div>
+
+      <div class="composer-footer">
+
+        <span>
+          ✦ MemberOps can help explain your member activity.
+        </span>
+
+        <span
+          id="session-label"
+          class="demo-note"
+        >
+          Demo member session
+        </span>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="./app.js"></script>
+
+</body>
+</html>

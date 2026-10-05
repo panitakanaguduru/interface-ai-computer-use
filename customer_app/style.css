@@ -1,0 +1,2347 @@
+:root {
+    --paper: #f5f4ee;
+    --paper-2: #eceae1;
+    --white: #fffef9;
+  
+    --ink: #181818;
+    --muted: #77746d;
+  
+    --yellow: #ffd82e;
+    --yellow-soft: #fff7b0;
+  
+    --pink: #f5c6d8;
+    --green: #cde6c7;
+    --purple: #d8cdf3;
+    --coral: #ff8975;
+  
+    --border: 2.5px solid var(--ink);
+  
+    --shadow:
+      5px 6px 0 rgba(24, 24, 24, 0.12);
+  }
+  
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  
+  body {
+    margin: 0;
+  
+    min-height: 100vh;
+  
+    color: var(--ink);
+  
+    background-color: var(--paper);
+  
+    background-image:
+      radial-gradient(
+        rgba(20,20,20,.10) 1px,
+        transparent 1px
+      );
+  
+    background-size: 24px 24px;
+  
+    font-family:
+      "DM Sans",
+      system-ui,
+      sans-serif;
+  
+    overflow-x: hidden;
+  }
+  
+  
+  button,
+  textarea {
+    font: inherit;
+  }
+  
+  
+  button {
+    cursor: pointer;
+  }
+  
+  
+  /* =========================================================
+     WELCOME
+     ========================================================= */
+  
+  .welcome-screen {
+    position: fixed;
+    inset: 0;
+  
+    z-index: 100;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    overflow: hidden;
+  
+    background:
+      radial-gradient(
+        circle at 15% 20%,
+        rgba(255,216,46,.26),
+        transparent 23%
+      ),
+      radial-gradient(
+        circle at 87% 75%,
+        rgba(245,198,216,.30),
+        transparent 22%
+      ),
+      var(--paper);
+  
+    transition:
+      opacity .65s ease,
+      transform .7s cubic-bezier(.2,.8,.2,1);
+  }
+  
+  
+  .welcome-screen.exit {
+    opacity: 0;
+  
+    transform:
+      scale(1.04);
+  
+    pointer-events: none;
+  }
+  
+  
+  .welcome-screen.hidden {
+    display: none;
+  }
+  
+  
+  .paper-grid {
+    position: absolute;
+    inset: 0;
+  
+    opacity: .5;
+  
+    background-image:
+      radial-gradient(
+        rgba(30,30,30,.12) 1px,
+        transparent 1px
+      );
+  
+    background-size:
+      25px 25px;
+  }
+  
+  
+  /* =========================================================
+     HELLOS
+     ========================================================= */
+  
+  .hello-cloud {
+    position: absolute;
+    inset: 0;
+  
+    pointer-events: none;
+  }
+  
+  
+  .hello {
+    position: absolute;
+  
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: clamp(22px, 2.1vw, 33px);
+  
+    opacity: 0;
+  
+    animation:
+      helloAppear 1.2s
+      cubic-bezier(.2,.9,.2,1.25)
+      forwards;
+  }
+  
+  
+  .h1 {
+    left: 11%;
+    top: 15%;
+  
+    animation-delay: .15s;
+  }
+  
+  
+  .h2 {
+    right: 12%;
+    top: 18%;
+  
+    animation-delay: .4s;
+  }
+  
+  
+  .h3 {
+    left: 6%;
+    top: 48%;
+  
+    animation-delay: .7s;
+  }
+  
+  
+  .h4 {
+    right: 6%;
+    top: 46%;
+  
+    animation-delay: 1s;
+  }
+  
+  
+  .h5 {
+    left: 19%;
+    bottom: 15%;
+  
+    animation-delay: 1.3s;
+  }
+  
+  
+  .h6 {
+    right: 21%;
+    bottom: 14%;
+  
+    animation-delay: 1.6s;
+  }
+  
+  
+  .h7 {
+    left: 39%;
+    top: 8%;
+  
+    animation-delay: 1.9s;
+  }
+  
+  
+  .h8 {
+    left: 42%;
+    bottom: 7%;
+  
+    animation-delay: 2.2s;
+  }
+  
+  
+  .h9 {
+    left: 2%;
+    bottom: 31%;
+  
+    animation-delay: 2.5s;
+  }
+  
+  
+  .h10 {
+    right: 3%;
+    bottom: 30%;
+  
+    animation-delay: 2.8s;
+  }
+  
+  
+  .hello.fade-away {
+    animation:
+      helloErase .6s ease forwards;
+  }
+  
+  
+  /* =========================================================
+     WELCOME AGENT
+     ========================================================= */
+  
+  .welcome-stage {
+    position: relative;
+  
+    z-index: 5;
+  
+    width: min(930px, 90%);
+  
+    display: grid;
+  
+    grid-template-columns:
+      290px 1fr;
+  
+    align-items: center;
+  
+    gap: 85px;
+  }
+  
+  
+  .agent {
+    position: relative;
+  
+    width: 230px;
+    height: 295px;
+  
+    margin: auto;
+  
+    animation:
+      agentArrive 1s
+      cubic-bezier(.2,.9,.3,1.25)
+      both;
+  }
+  
+  
+  .agent-head {
+    position: absolute;
+  
+    width: 190px;
+    height: 150px;
+  
+    left: 20px;
+    top: 38px;
+  
+    background: var(--yellow);
+  
+    border: 4px solid var(--ink);
+  
+    border-radius:
+      49% 51% 45% 54%;
+  
+    box-shadow:
+      7px 8px 0
+      rgba(0,0,0,.12);
+  
+    transform:
+      rotate(-3deg);
+  }
+  
+  
+  .eye {
+    position: absolute;
+  
+    width: 36px;
+    height: 43px;
+  
+    top: 45px;
+  
+    background: white;
+  
+    border: 3px solid var(--ink);
+  
+    border-radius: 50%;
+  
+    overflow: hidden;
+  }
+  
+  
+  .eye-left {
+    left: 42px;
+  }
+  
+  
+  .eye-right {
+    right: 42px;
+  }
+  
+  
+  .pupil {
+    position: absolute;
+  
+    width: 12px;
+    height: 16px;
+  
+    left: 9px;
+    top: 10px;
+  
+    border-radius: 50%;
+  
+    background: var(--ink);
+  
+    transition:
+      transform .08s linear;
+  }
+  
+  
+  .agent-mouth {
+    position: absolute;
+  
+    width: 42px;
+    height: 20px;
+  
+    left: 72px;
+    bottom: 22px;
+  
+    border-bottom:
+      4px solid var(--ink);
+  
+    border-radius: 50%;
+  }
+  
+  
+  .antenna {
+    position: absolute;
+  
+    width: 4px;
+    height: 42px;
+  
+    left: 112px;
+    top: 2px;
+  
+    background: var(--ink);
+  
+    transform:
+      rotate(8deg);
+  
+    transform-origin: bottom;
+  }
+  
+  
+  .antenna span {
+    position: absolute;
+  
+    width: 18px;
+    height: 18px;
+  
+    left: -7px;
+    top: -10px;
+  
+    border:
+      3px solid var(--ink);
+  
+    border-radius: 50%;
+  
+    background: var(--coral);
+  }
+  
+  
+  .agent-body {
+    position: absolute;
+  
+    width: 140px;
+    height: 105px;
+  
+    left: 45px;
+    top: 181px;
+  
+    display: grid;
+    place-items: center;
+  
+    border:
+      4px solid var(--ink);
+  
+    border-radius:
+      40% 45% 32% 36%;
+  
+    background: var(--white);
+  
+    transform:
+      rotate(2deg);
+  }
+  
+  
+  .agent-body span {
+    font-size: 43px;
+  }
+  
+  
+  .arm {
+    position: absolute;
+  
+    width: 72px;
+    height: 13px;
+  
+    top: 210px;
+  
+    border:
+      4px solid var(--ink);
+  
+    border-radius: 30px;
+  
+    background: var(--white);
+  }
+  
+  
+  .arm-left {
+    left: -12px;
+  
+    transform:
+      rotate(-32deg);
+  }
+  
+  
+  .arm-right {
+    right: -12px;
+  
+    transform-origin:
+      left center;
+  
+    animation:
+      agentWave 1.1s
+      ease-in-out
+      1.1s 3;
+  }
+  
+  
+  /* =========================================================
+     WELCOME COPY
+     ========================================================= */
+  
+  .welcome-message {
+    opacity: 0;
+  
+    transform:
+      translateY(25px);
+  
+    animation:
+      welcomeCopy .8s
+      ease 1s forwards;
+  }
+  
+  
+  .scribble-text {
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 28px;
+  
+    margin-bottom: 6px;
+  
+    transform:
+      rotate(-2deg);
+  
+    transform-origin: left;
+  }
+  
+  
+  .welcome-message h1 {
+    max-width: 600px;
+  
+    margin: 0;
+  
+    font-size:
+      clamp(48px, 6vw, 76px);
+  
+    line-height: .98;
+  
+    letter-spacing: -.065em;
+  }
+  
+  
+  .marker {
+    position: relative;
+  
+    z-index: 1;
+  
+    white-space: nowrap;
+  }
+  
+  
+  .marker::before {
+    content: "";
+  
+    position: absolute;
+  
+    z-index: -1;
+  
+    left: -4px;
+    right: -5px;
+    bottom: 6px;
+  
+    height: 24px;
+  
+    background:
+      var(--yellow);
+  
+    transform:
+      rotate(-1deg)
+      scaleX(0);
+  
+    transform-origin: left;
+  
+    animation:
+      markerSwipe .7s
+      ease 1.9s forwards;
+  }
+  
+  
+  .welcome-message p {
+    max-width: 530px;
+  
+    margin:
+      27px 0;
+  
+    color: #68665f;
+  
+    font-size: 18px;
+  
+    line-height: 1.65;
+  }
+  
+  
+  .enter-chat {
+    padding:
+      15px 21px;
+  
+    border:
+      var(--border);
+  
+    border-radius: 12px;
+  
+    background: var(--ink);
+  
+    color: white;
+  
+    box-shadow:
+      5px 6px 0 var(--yellow);
+  
+    font-weight: 800;
+  
+    transition:
+      transform .15s ease,
+      box-shadow .15s ease;
+  }
+  
+  
+  .enter-chat span {
+    margin-left: 24px;
+  }
+  
+  
+  .enter-chat:hover {
+    transform:
+      translate(-2px,-2px);
+  
+    box-shadow:
+      8px 9px 0 var(--yellow);
+  }
+  
+  
+  .enter-chat:active {
+    transform:
+      translate(2px,2px);
+  
+    box-shadow:
+      2px 2px 0 var(--yellow);
+  }
+  
+  
+  .welcome-doodle {
+    position: absolute;
+  
+    z-index: 4;
+  
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 20px;
+  }
+  
+  
+  .doodle-one {
+    left: 8%;
+    bottom: 10%;
+  
+    transform:
+      rotate(-7deg);
+  }
+  
+  
+  .doodle-two {
+    right: 7%;
+    bottom: 9%;
+  
+    transform:
+      rotate(5deg);
+  }
+  
+  
+  .doodle-three {
+    right: 8%;
+    top: 8%;
+  
+    transform:
+      rotate(-3deg);
+  }
+  
+  
+  /* =========================================================
+     CHAT APP
+     ========================================================= */
+  
+  .chat-app {
+    min-height: 100vh;
+  
+    opacity: 0;
+  
+    transform:
+      translateY(25px);
+  
+    pointer-events: none;
+  
+    transition:
+      opacity .7s ease,
+      transform .7s ease;
+  }
+  
+  
+  .chat-app.visible {
+    opacity: 1;
+  
+    transform: none;
+  
+    pointer-events: auto;
+  }
+  
+  
+  /* =========================================================
+     HEADER
+     ========================================================= */
+  
+  .chat-header {
+    width:
+      min(1120px, 92%);
+  
+    margin: auto;
+  
+    min-height: 92px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: space-between;
+  
+    border-bottom:
+      1px dashed rgba(20,20,20,.2);
+  }
+  
+  
+  .brand {
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 12px;
+  
+    padding: 0;
+  
+    border: 0;
+  
+    background: transparent;
+  
+    color: var(--ink);
+  
+    text-align: left;
+  }
+  
+  
+  .brand-face {
+    width: 46px;
+    height: 40px;
+  
+    display: flex;
+  
+    justify-content: center;
+    align-items: center;
+  
+    gap: 7px;
+  
+    border:
+      3px solid var(--ink);
+  
+    border-radius:
+      46% 54% 45% 55%;
+  
+    background: var(--yellow);
+  
+    transform:
+      rotate(-3deg);
+  }
+  
+  
+  .brand-face span {
+    width: 6px;
+    height: 9px;
+  
+    border-radius: 50%;
+  
+    background: var(--ink);
+  }
+  
+  
+  .brand-copy strong {
+    display: block;
+  
+    font-size: 17px;
+  }
+  
+  
+  .brand-copy small {
+    display: block;
+  
+    color: var(--muted);
+  
+    margin-top: 1px;
+  }
+  
+  
+  .header-right {
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 25px;
+  }
+  
+  
+  .secure-session {
+    padding:
+      9px 14px;
+  
+    border:
+      1px solid rgba(20,20,20,.17);
+  
+    border-radius: 999px;
+  
+    background:
+      rgba(255,255,255,.55);
+  
+    font-size: 13px;
+  
+    font-weight: 600;
+  }
+  
+  
+  .secure-session span {
+    display: inline-block;
+  
+    width: 8px;
+    height: 8px;
+  
+    margin-right: 7px;
+  
+    border-radius: 50%;
+  
+    background: #29a862;
+  }
+  
+  
+  .tiny-doodle {
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 17px;
+  
+    transform:
+      rotate(-3deg);
+  }
+  
+  
+  /* =========================================================
+     CONVERSATION
+     ========================================================= */
+  
+  .conversation {
+    width:
+      min(900px, 91%);
+  
+    margin: auto;
+  
+    padding:
+      65px 0 220px;
+  }
+  
+  
+  .start-state {
+    text-align: center;
+  
+    transition:
+      opacity .35s ease,
+      transform .35s ease;
+  }
+  
+  
+  .start-state.hide-start {
+    opacity: 0;
+  
+    transform:
+      translateY(-15px);
+  
+    pointer-events: none;
+  
+    height: 0;
+  
+    overflow: hidden;
+  
+    padding: 0;
+  }
+  
+  
+  /* =========================================================
+     CHAT AGENT
+     ========================================================= */
+  
+  .chat-agent {
+    position: relative;
+  
+    width: 115px;
+    height: 145px;
+  
+    margin:
+      0 auto 22px;
+  
+    animation:
+      agentFloat 3s
+      ease-in-out infinite;
+  }
+  
+  
+  .chat-agent-head {
+    position: absolute;
+  
+    width: 105px;
+    height: 83px;
+  
+    left: 5px;
+    top: 16px;
+  
+    display: flex;
+  
+    justify-content: center;
+    align-items: center;
+  
+    gap: 20px;
+  
+    border:
+      3px solid var(--ink);
+  
+    border-radius:
+      48% 52% 46% 54%;
+  
+    background: var(--yellow);
+  
+    transform:
+      rotate(-2deg);
+  
+    box-shadow:
+      4px 5px 0
+      rgba(0,0,0,.1);
+  }
+  
+  
+  .chat-agent-head span {
+    width: 9px;
+    height: 13px;
+  
+    border-radius: 50%;
+  
+    background: var(--ink);
+  }
+  
+  
+  .chat-agent-body {
+    position: absolute;
+  
+    width: 75px;
+    height: 55px;
+  
+    left: 20px;
+    top: 93px;
+  
+    display: grid;
+    place-items: center;
+  
+    border:
+      3px solid var(--ink);
+  
+    border-radius:
+      40%;
+  
+    background: var(--white);
+  
+    font-size: 23px;
+  }
+  
+  
+  .chat-agent-antenna {
+    position: absolute;
+  
+    width: 3px;
+    height: 25px;
+  
+    left: 56px;
+    top: -3px;
+  
+    background: var(--ink);
+  
+    transform:
+      rotate(7deg);
+  }
+  
+  
+  .chat-agent-antenna::after {
+    content: "";
+  
+    position: absolute;
+  
+    width: 11px;
+    height: 11px;
+  
+    left: -4px;
+    top: -5px;
+  
+    border:
+      2px solid var(--ink);
+  
+    border-radius: 50%;
+  
+    background: var(--coral);
+  }
+  
+  
+  /* =========================================================
+     START COPY
+     ========================================================= */
+  
+  .handwritten {
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 25px;
+  }
+  
+  
+  .start-copy h2 {
+    margin:
+      8px 0 12px;
+  
+    font-size:
+      clamp(40px, 6vw, 62px);
+  
+    line-height: 1;
+  
+    letter-spacing: -.055em;
+  }
+  
+  
+  .start-copy h2 span {
+    position: relative;
+  
+    display: inline-block;
+  }
+  
+  
+  .start-copy h2 span::after {
+    content: "";
+  
+    position: absolute;
+  
+    left: 0;
+    right: 0;
+    bottom: -8px;
+  
+    height: 8px;
+  
+    background:
+      var(--yellow);
+  
+    border-radius: 50%;
+  
+    transform:
+      rotate(-1deg);
+  }
+  
+  
+  .start-copy p {
+    max-width: 520px;
+  
+    margin:
+      25px auto;
+  
+    color: var(--muted);
+  
+    font-size: 17px;
+  
+    line-height: 1.6;
+  }
+  
+  
+  /* =========================================================
+     SUGGESTIONS
+     ========================================================= */
+  
+  .suggestion-cloud {
+    max-width: 680px;
+  
+    margin:
+      40px auto 0;
+  
+    display: flex;
+  
+    justify-content: center;
+  
+    flex-wrap: wrap;
+  
+    gap: 13px;
+  }
+  
+  
+  .suggestion {
+    position: relative;
+  
+    padding:
+      13px 17px;
+  
+    border:
+      var(--border);
+  
+    border-radius: 8px;
+  
+    color: var(--ink);
+  
+    font-weight: 700;
+  
+    box-shadow:
+      3px 4px 0
+      rgba(20,20,20,.10);
+  
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
+  }
+  
+  
+  .suggestion:nth-child(1) {
+    transform:
+      rotate(-2deg);
+  }
+  
+  
+  .suggestion:nth-child(2) {
+    transform:
+      rotate(1.5deg);
+  }
+  
+  
+  .suggestion:nth-child(3) {
+    transform:
+      rotate(-1deg);
+  }
+  
+  
+  .suggestion:nth-child(4) {
+    transform:
+      rotate(2deg);
+  }
+  
+  
+  .suggestion:hover {
+    transform:
+      translateY(-5px)
+      rotate(0deg);
+  
+    box-shadow:
+      5px 7px 0
+      rgba(20,20,20,.13);
+  }
+  
+  
+  .suggestion-yellow {
+    background:
+      var(--yellow-soft);
+  }
+  
+  
+  .suggestion-pink {
+    background:
+      var(--pink);
+  }
+  
+  
+  .suggestion-green {
+    background:
+      var(--green);
+  }
+  
+  
+  .suggestion-purple {
+    background:
+      var(--purple);
+  }
+  
+  
+  .suggestion span {
+    margin-right: 7px;
+  }
+  
+  
+  /* =========================================================
+     MESSAGES
+     ========================================================= */
+  
+  .messages {
+    display: flex;
+  
+    flex-direction: column;
+  
+    gap: 35px;
+  }
+  
+  
+  .message {
+    animation:
+      messageEnter .45s
+      cubic-bezier(.2,.8,.2,1.1)
+      both;
+  }
+  
+  
+  .user-message {
+    align-self: flex-end;
+  
+    width:
+      min(610px, 90%);
+  }
+  
+  
+  .user-label,
+  .agent-label {
+    margin-bottom: 8px;
+  
+    color: #8a877e;
+  
+    font-size: 11px;
+  
+    font-weight: 800;
+  
+    letter-spacing: .12em;
+  
+    text-transform: uppercase;
+  }
+  
+  
+  .user-label {
+    text-align: right;
+  }
+  
+  
+  .user-bubble {
+    padding:
+      17px 20px;
+  
+    border:
+      var(--border);
+  
+    border-radius:
+      18px 18px 3px 18px;
+  
+    background: var(--ink);
+  
+    color: white;
+  
+    font-size: 17px;
+  
+    line-height: 1.55;
+  }
+  
+  
+  .agent-message {
+    align-self: flex-start;
+  
+    width:
+      min(690px, 94%);
+  }
+  
+  
+  .agent-message-top {
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 11px;
+  
+    margin-bottom: 10px;
+  }
+  
+  
+  .response-agent {
+    width: 42px;
+    height: 36px;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    gap: 5px;
+  
+    border:
+      2px solid var(--ink);
+  
+    border-radius:
+      46%;
+  
+    background:
+      var(--yellow);
+  
+    transform:
+      rotate(-3deg);
+  }
+  
+  
+  .response-agent span {
+    width: 5px;
+    height: 7px;
+  
+    border-radius: 50%;
+  
+    background:
+      var(--ink);
+  }
+  
+  
+  .agent-bubble {
+    position: relative;
+  
+    padding:
+      23px;
+  
+    border:
+      var(--border);
+  
+    background:
+      var(--white);
+  
+    box-shadow:
+      5px 6px 0
+      rgba(20,20,20,.10);
+  
+    font-size: 17px;
+  
+    line-height: 1.65;
+  
+    transform:
+      rotate(.15deg);
+  }
+  
+  
+  .agent-bubble::before {
+    content: "";
+  
+    position: absolute;
+  
+    width: 70px;
+    height: 20px;
+  
+    left: 25px;
+    top: -12px;
+  
+    background:
+      rgba(255,216,46,.55);
+  
+    transform:
+      rotate(-3deg);
+  }
+  
+  
+  /* =========================================================
+     THINKING
+     ========================================================= */
+  
+  .thinking-message {
+    align-self: flex-start;
+  }
+  
+  
+  .thinking-card {
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 14px;
+  
+    padding:
+      14px 18px;
+  
+    border:
+      2px dashed #aaa69b;
+  
+    background:
+      rgba(255,255,255,.55);
+  
+    border-radius: 10px;
+  
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 19px;
+  }
+  
+  
+  .thinking-dots {
+    display: flex;
+  
+    gap: 4px;
+  }
+  
+  
+  .thinking-dots span {
+    width: 7px;
+    height: 7px;
+  
+    border-radius: 50%;
+  
+    background:
+      var(--ink);
+  
+    animation:
+      dotBounce .65s
+      infinite alternate;
+  }
+  
+  
+  .thinking-dots span:nth-child(2) {
+    animation-delay: .18s;
+  }
+  
+  
+  .thinking-dots span:nth-child(3) {
+    animation-delay: .36s;
+  }
+  
+  
+  /* =========================================================
+     RESULT OBJECTS
+     ========================================================= */
+  
+  .result-object {
+    margin-top: 20px;
+  }
+  
+  
+  /* RECEIPT */
+  
+  .result-receipt {
+    position: relative;
+  
+    max-width: 380px;
+  
+    margin-top: 20px;
+  
+    padding:
+      25px;
+  
+    border:
+      var(--border);
+  
+    background:
+      #fffdf5;
+  
+    box-shadow:
+      5px 6px 0
+      rgba(20,20,20,.10);
+  
+    transform:
+      rotate(-1deg);
+  
+    animation:
+      receiptDrop .6s
+      cubic-bezier(.2,.9,.2,1.2);
+  }
+  
+  
+  .receipt-label {
+    margin-bottom: 20px;
+  
+    padding-bottom: 12px;
+  
+    border-bottom:
+      2px dashed #b9b5aa;
+  
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 21px;
+  }
+  
+  
+  .receipt-line {
+    display: flex;
+  
+    justify-content: space-between;
+  
+    gap: 20px;
+  
+    margin: 10px 0;
+  
+    color: #66635d;
+  }
+  
+  
+  .receipt-line strong {
+    color: var(--ink);
+  }
+  
+  
+  .receipt-total {
+    position: relative;
+  
+    margin-top: 22px;
+  
+    padding-top: 17px;
+  
+    border-top:
+      2px dashed #b9b5aa;
+  
+    display: flex;
+  
+    justify-content: space-between;
+  
+    font-size: 25px;
+  
+    font-weight: 800;
+  }
+  
+  
+  .receipt-total strong {
+    position: relative;
+  
+    z-index: 2;
+  }
+  
+  
+  .receipt-total strong::after {
+    content: "";
+  
+    position: absolute;
+  
+    z-index: -1;
+  
+    left: -7px;
+    right: -7px;
+    bottom: 1px;
+  
+    height: 14px;
+  
+    background:
+      var(--yellow);
+  
+    transform:
+      rotate(-2deg);
+  }
+  
+  
+  .receipt-arrow {
+    position: absolute;
+  
+    right: -125px;
+    bottom: 8px;
+  
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 20px;
+  
+    transform:
+      rotate(-7deg);
+  }
+  
+  
+  /* CLAIM PAPERS */
+  
+  .claim-results {
+    display: flex;
+  
+    flex-wrap: wrap;
+  
+    gap: 15px;
+  
+    margin-top: 20px;
+  }
+  
+  
+  .claim-paper {
+    position: relative;
+  
+    min-width: 220px;
+  
+    padding:
+      20px;
+  
+    border:
+      var(--border);
+  
+    background:
+      var(--white);
+  
+    box-shadow:
+      4px 5px 0
+      rgba(20,20,20,.1);
+  
+    animation:
+      paperFly .55s
+      cubic-bezier(.2,.9,.2,1.15)
+      both;
+  }
+  
+  
+  .claim-paper:nth-child(1) {
+    transform:
+      rotate(-2deg);
+  }
+  
+  
+  .claim-paper:nth-child(2) {
+    transform:
+      rotate(1.5deg);
+  
+    animation-delay: .08s;
+  }
+  
+  
+  .claim-paper:nth-child(3) {
+    transform:
+      rotate(-.8deg);
+  
+    animation-delay: .16s;
+  }
+  
+  
+  .claim-number {
+    font-weight: 800;
+  
+    font-size: 19px;
+  }
+  
+  
+  .claim-stamp {
+    display: inline-block;
+  
+    margin:
+      17px 0 12px;
+  
+    padding:
+      4px 9px;
+  
+    border:
+      2px solid var(--ink);
+  
+    background:
+      var(--yellow);
+  
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 18px;
+  
+    transform:
+      rotate(-4deg);
+  
+    animation:
+      stampHit .35s
+      .35s both;
+  }
+  
+  
+  .claim-amount {
+    font-size: 23px;
+  
+    font-weight: 800;
+  }
+  
+  
+  /* TRANSACTION LIST */
+  
+  .transaction-results {
+    display: grid;
+  
+    gap: 9px;
+  
+    margin-top: 20px;
+  }
+  
+  
+  .mini-receipt {
+    display: grid;
+  
+    grid-template-columns:
+      110px 1fr auto;
+  
+    align-items: center;
+  
+    gap: 15px;
+  
+    padding:
+      13px 16px;
+  
+    border:
+      2px solid var(--ink);
+  
+    background:
+      #fffdf5;
+  
+    box-shadow:
+      3px 3px 0
+      rgba(20,20,20,.08);
+  
+    animation:
+      receiptSlide .4s
+      both;
+  }
+  
+  
+  .mini-receipt:nth-child(even) {
+    transform:
+      rotate(.3deg);
+  }
+  
+  
+  .mini-receipt:nth-child(odd) {
+    transform:
+      rotate(-.3deg);
+  }
+  
+  
+  .mini-receipt strong {
+    font-size: 17px;
+  }
+  
+  
+  /* ACCOUNT CARDS */
+  
+  .account-results {
+    display: flex;
+  
+    flex-wrap: wrap;
+  
+    gap: 15px;
+  
+    margin-top: 20px;
+  }
+  
+  
+  .account-result-card {
+    min-width: 250px;
+  
+    padding:
+      22px;
+  
+    border:
+      var(--border);
+  
+    border-radius: 16px;
+  
+    background:
+      var(--ink);
+  
+    color: white;
+  
+    box-shadow:
+      4px 5px 0
+      var(--yellow);
+  
+    animation:
+      accountSlide .5s
+      cubic-bezier(.2,.8,.2,1.15)
+      both;
+  }
+  
+  
+  .account-result-card:nth-child(even) {
+    background:
+      var(--purple);
+  
+    color:
+      var(--ink);
+  }
+  
+  
+  .account-result-card small {
+    display: block;
+  
+    opacity: .7;
+  
+    margin-bottom: 25px;
+  }
+  
+  
+  .account-result-card strong {
+    display: block;
+  
+    font-size: 21px;
+  }
+  
+  
+  /* =========================================================
+     COMPOSER
+     ========================================================= */
+  
+  .composer-wrap {
+    position: fixed;
+  
+    z-index: 30;
+  
+    left: 50%;
+    bottom: 0;
+  
+    width:
+      min(900px, 94%);
+  
+    transform:
+      translateX(-50%);
+  
+    padding:
+      20px 0 18px;
+  
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(245,244,238,0),
+        var(--paper) 28%,
+        var(--paper)
+      );
+  }
+  
+  
+  .composer-note {
+    width: fit-content;
+  
+    margin:
+      0 0 7px 15px;
+  
+    font-family:
+      "Patrick Hand",
+      cursive;
+  
+    font-size: 17px;
+  
+    transform:
+      rotate(-2deg);
+  }
+  
+  
+  .composer {
+    display: flex;
+  
+    align-items: flex-end;
+  
+    gap: 10px;
+  
+    padding:
+      10px 10px 10px 19px;
+  
+    border:
+      3px solid var(--ink);
+  
+    border-radius: 16px;
+  
+    background:
+      var(--white);
+  
+    box-shadow:
+      5px 6px 0
+      rgba(20,20,20,.11);
+  
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
+  }
+  
+  
+  .composer:focus-within {
+    transform:
+      translateY(-3px);
+  
+    box-shadow:
+      6px 8px 0
+      var(--yellow);
+  }
+  
+  
+  .composer textarea {
+    flex: 1;
+  
+    min-height: 44px;
+    max-height: 130px;
+  
+    padding:
+      11px 0;
+  
+    border: 0;
+  
+    outline: 0;
+  
+    resize: none;
+  
+    background: transparent;
+  
+    color: var(--ink);
+  
+    font-size: 16px;
+  }
+  
+  
+  .composer textarea::placeholder {
+    color: #9a978f;
+  }
+  
+  
+  .send-button {
+    flex:
+      0 0 49px;
+  
+    width: 49px;
+    height: 49px;
+  
+    display: grid;
+  
+    place-items: center;
+  
+    border:
+      var(--border);
+  
+    border-radius: 11px;
+  
+    background:
+      var(--yellow);
+  
+    color:
+      var(--ink);
+  
+    font-size: 24px;
+  
+    font-weight: 800;
+  
+    transition:
+      transform .12s ease;
+  }
+  
+  
+  .send-button:hover {
+    transform:
+      rotate(-4deg)
+      scale(1.05);
+  }
+  
+  
+  .send-button:active {
+    transform:
+      scale(.86);
+  }
+  
+  
+  .send-button:disabled {
+    opacity: .5;
+  
+    cursor: wait;
+  }
+  
+  
+  .composer-footer {
+    display: flex;
+  
+    justify-content: space-between;
+  
+    padding:
+      8px 5px 0;
+  
+    color:
+      #8b887f;
+  
+    font-size:
+      11px;
+  }
+  
+  
+  .demo-note {
+    font-weight: 700;
+  }
+  
+  
+  /* =========================================================
+     ANIMATIONS
+     ========================================================= */
+  
+  @keyframes helloAppear {
+  
+    0% {
+      opacity: 0;
+  
+      transform:
+        scale(.5)
+        rotate(-10deg)
+        translateY(10px);
+    }
+  
+    55% {
+      opacity: 1;
+  
+      transform:
+        scale(1.18)
+        rotate(3deg)
+        translateY(0);
+    }
+  
+    100% {
+      opacity: .82;
+  
+      transform:
+        scale(1)
+        rotate(-2deg);
+    }
+  
+  }
+  
+  
+  @keyframes helloErase {
+  
+    from {
+      opacity: .82;
+  
+      filter:
+        blur(0);
+    }
+  
+    to {
+      opacity: 0;
+  
+      filter:
+        blur(3px);
+  
+      transform:
+        translateX(15px)
+        scale(.9);
+    }
+  
+  }
+  
+  
+  @keyframes agentArrive {
+  
+    0% {
+      opacity: 0;
+  
+      transform:
+        translateY(90px)
+        rotate(-12deg)
+        scale(.65);
+    }
+  
+    70% {
+      transform:
+        translateY(-12px)
+        rotate(5deg)
+        scale(1.05);
+    }
+  
+    100% {
+      opacity: 1;
+  
+      transform: none;
+    }
+  
+  }
+  
+  
+  @keyframes agentWave {
+  
+    0%,
+    100% {
+      transform:
+        rotate(-18deg);
+    }
+  
+    50% {
+      transform:
+        rotate(-78deg)
+        translateY(-13px);
+    }
+  
+  }
+  
+  
+  @keyframes welcomeCopy {
+  
+    to {
+      opacity: 1;
+  
+      transform: none;
+    }
+  
+  }
+  
+  
+  @keyframes markerSwipe {
+  
+    to {
+      transform:
+        rotate(-1deg)
+        scaleX(1);
+    }
+  
+  }
+  
+  
+  @keyframes agentFloat {
+  
+    0%,
+    100% {
+      transform:
+        translateY(0)
+        rotate(-1deg);
+    }
+  
+    50% {
+      transform:
+        translateY(-7px)
+        rotate(1deg);
+    }
+  
+  }
+  
+  
+  @keyframes messageEnter {
+  
+    from {
+      opacity: 0;
+  
+      transform:
+        translateY(18px)
+        scale(.98);
+    }
+  
+    to {
+      opacity: 1;
+  
+      transform: none;
+    }
+  
+  }
+  
+  
+  @keyframes dotBounce {
+  
+    from {
+      opacity: .3;
+  
+      transform:
+        translateY(3px);
+    }
+  
+    to {
+      opacity: 1;
+  
+      transform:
+        translateY(-3px);
+    }
+  
+  }
+  
+  
+  @keyframes receiptDrop {
+  
+    from {
+      opacity: 0;
+  
+      transform:
+        translateY(-25px)
+        rotate(-7deg)
+        scale(.92);
+    }
+  
+    to {
+      opacity: 1;
+  
+      transform:
+        rotate(-1deg)
+        scale(1);
+    }
+  
+  }
+  
+  
+  @keyframes paperFly {
+  
+    from {
+      opacity: 0;
+  
+      transform:
+        translateX(-30px)
+        rotate(-8deg)
+        scale(.9);
+    }
+  
+    to {
+      opacity: 1;
+    }
+  
+  }
+  
+  
+  @keyframes stampHit {
+  
+    from {
+      opacity: 0;
+  
+      transform:
+        scale(2)
+        rotate(-15deg);
+    }
+  
+    to {
+      opacity: 1;
+  
+      transform:
+        scale(1)
+        rotate(-4deg);
+    }
+  
+  }
+  
+  
+  @keyframes receiptSlide {
+  
+    from {
+      opacity: 0;
+  
+      transform:
+        translateX(-25px);
+    }
+  
+    to {
+      opacity: 1;
+    }
+  
+  }
+  
+  
+  @keyframes accountSlide {
+  
+    from {
+      opacity: 0;
+  
+      transform:
+        translateY(25px)
+        rotate(-5deg);
+    }
+  
+    to {
+      opacity: 1;
+    }
+  
+  }
+  
+  
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  
+  @media (max-width: 800px) {
+  
+    .welcome-stage {
+      grid-template-columns:
+        1fr;
+  
+      gap: 5px;
+  
+      text-align: center;
+    }
+  
+  
+    .agent {
+      transform:
+        scale(.75);
+  
+      margin-bottom: -30px;
+    }
+  
+  
+    .welcome-message h1 {
+      font-size: 48px;
+    }
+  
+  
+    .welcome-message p {
+      margin:
+        20px auto;
+    }
+  
+  
+    .hello {
+      font-size: 20px;
+    }
+  
+  
+    .welcome-doodle {
+      display: none;
+    }
+  
+  
+    .tiny-doodle {
+      display: none;
+    }
+  
+  
+    .chat-header {
+      min-height: 75px;
+    }
+  
+  
+    .brand-copy small {
+      display: none;
+    }
+  
+  
+    .conversation {
+      padding-top: 45px;
+    }
+  
+  
+    .start-copy h2 {
+      font-size: 43px;
+    }
+  
+  
+    .mini-receipt {
+      grid-template-columns:
+        1fr auto;
+    }
+  
+  
+    .mini-receipt span:first-child {
+      display: none;
+    }
+  
+  
+    .receipt-arrow {
+      display: none;
+    }
+  
+  
+    .composer-footer {
+      display: none;
+    }
+  
+  }
+  
+  
+  @media (prefers-reduced-motion: reduce) {
+  
+    *,
+    *::before,
+    *::after {
+      animation-duration:
+        .01ms !important;
+  
+      animation-iteration-count:
+        1 !important;
+  
+      transition-duration:
+        .01ms !important;
+    }
+  
+  }

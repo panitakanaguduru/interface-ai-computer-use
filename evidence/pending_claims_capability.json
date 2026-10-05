@@ -1,0 +1,46 @@
+{
+  "artifact_id": "artifact_20261004_231554_044486",
+  "version": 1,
+  "created_at": "2026-10-04T23:15:54.044522+00:00",
+  "updated_at": "2026-10-04T23:15:54.045036+00:00",
+  "capability": {
+    "goal": "AUTHORIZED CUSTOMER SESSION\n\nMember ID: 10002\n\nSECURITY RULES:\n1. Only access member 10002.\n2. Do not search for another member.\n3. Do not navigate to another member's record.\n4. Do not reveal another member's information.\n5. If another member is encountered, do not reveal their information.\n6. Answer only the customer's request.\n\nCUSTOMER REQUEST:\nHow many pending claims do I have?",
+    "application": "MemberOps Operations Portal"
+  },
+  "inputs": {
+    "member_id": {
+      "type": "string",
+      "required": true,
+      "placeholder": "{{member_id}}",
+      "description": "Member identifier used by the capability."
+    }
+  },
+  "steps": [
+    {
+      "action": "fill",
+      "selector": "#member-id",
+      "value": "{{member_id}}"
+    },
+    {
+      "action": "click",
+      "selector": "#search-button"
+    }
+  ],
+  "outputs": {
+    "type": "natural_language_answer",
+    "description": "Answer produced after successfully completing the browser workflow."
+  },
+  "success_condition": {
+    "type": "agent_completion",
+    "description": "The discovered workflow completes and reaches the agent done state."
+  },
+  "metadata": {
+    "status": "approved",
+    "replayable": true,
+    "capability_name": "pending_claims_lookup",
+    "mode": "discovery",
+    "discovered_by": "llm",
+    "replay_requires_llm": false,
+    "final_url": "http://localhost:8000/"
+  }
+}
