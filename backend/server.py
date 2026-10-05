@@ -81,7 +81,7 @@ from artifact_store import (
 
 HOST = os.getenv(
     "HOST",
-    "localhost",
+    "0.0.0.0",
 )
 
 PORT = int(
