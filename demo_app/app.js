@@ -1281,19 +1281,162 @@ document.addEventListener("DOMContentLoaded", () => {
           clearTimeout(actTimer);
 
 
-          if (
-              !response.ok
-              ||
-              !data.success
-          ) {
+        // =========================================
+        // HUMAN REVIEW / SAFETY ESCALATION
+        // =========================================
 
-              throw new Error(
-                  data.error
-                  ||
-                  "Agent could not complete "
-                  + "the task."
-              );
-          }
+        if (
+            data.mode === "escalated"
+            &&
+            data.human_escalation?.required
+        ) {
+
+            activateProgress(
+                progressObserve,
+                100
+            );
+
+            activateProgress(
+                progressPlan,
+                100
+            );
+
+            activateProgress(
+                progressAct,
+                100
+            );
+
+            activateProgress(
+                progressComplete,
+                100
+            );
+
+            setAgentState(
+                "Human review required"
+            );
+
+            agentAnswer.textContent =
+                data.answer
+                || "This request requires human review.";
+
+            resultSteps.textContent =
+                data.steps ?? 0;
+
+            resultActions.textContent =
+                data.action_count
+                ?? data.actions?.length
+                ?? 0;
+
+            agentResult.classList.remove(
+                "hidden"
+            );
+
+            return;
+        }
+
+
+        // =========================================
+        // EXPECTED BUSINESS OUTCOME
+        // MEMBER NOT FOUND
+        // =========================================
+
+        if (
+            data.outcome === "member_not_found"
+        ) {
+
+            activateProgress(
+                progressObserve,
+                100
+            );
+
+            activateProgress(
+                progressPlan,
+                100
+            );
+
+            activateProgress(
+                progressAct,
+                100
+            );
+
+            activateProgress(
+                progressComplete,
+                100
+            );
+
+            setAgentState(
+                "Complete"
+            );
+
+            agentAnswer.textContent =
+                data.answer
+                || "Member not found.";
+
+            resultSteps.textContent =
+                data.steps ?? 0;
+
+            resultActions.textContent =
+                data.action_count
+                ?? data.actions?.length
+                ?? 0;
+
+            agentResult.classList.remove(
+                "hidden"
+            );
+
+            // Clear stale member data from a previous search.
+            currentMember = null;
+
+            memberIdInput.value =
+                data.member_id || "";
+
+            memberResults.classList.add(
+                "hidden"
+            );
+
+            contextTitle.textContent =
+                "No member selected";
+
+            contextStatus.textContent =
+                "—";
+
+            contextStatus.classList.remove(
+                "active"
+            );
+
+            contextCopy.textContent =
+                data.answer
+                || "No matching member was found.";
+
+            lookupMessage.classList.add(
+                "error"
+            );
+
+            lookupMessage.textContent =
+                data.answer
+                || "Member not found.";
+
+            return;
+        }
+
+
+        // =========================================
+        // TRUE AGENT FAILURE
+        // =========================================
+
+        if (
+            !response.ok
+            ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data.error
+                || data.answer
+                || "Agent could not complete "
+                + "the task."
+            );
+        }
 
 
           activateProgress(
