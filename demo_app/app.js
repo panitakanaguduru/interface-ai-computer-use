@@ -1331,6 +1331,51 @@ document.addEventListener("DOMContentLoaded", () => {
                 "hidden"
             );
 
+
+            // Keep the visible workspace consistent
+            // with the member referenced in the request.
+            const escalatedMemberId =
+                data.human_escalation?.member_id
+                || task.match(/\b10\d{3}\b/)?.[0]
+                || null;
+
+            if (escalatedMemberId) {
+
+                memberIdInput.value =
+                    escalatedMemberId;
+
+                searchMember(
+                    escalatedMemberId,
+                    {
+                        silentScroll: true,
+                    }
+                );
+
+            } else {
+
+                currentMember = null;
+
+                memberIdInput.value = "";
+
+                memberResults.classList.add(
+                    "hidden"
+                );
+
+                contextTitle.textContent =
+                    "No member selected";
+
+                contextStatus.textContent =
+                    "—";
+
+                contextStatus.classList.remove(
+                    "active"
+                );
+
+                contextCopy.textContent =
+                    "Human review is required before "
+                    + "this request can continue.";
+            }
+
             return;
         }
 
