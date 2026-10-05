@@ -852,99 +852,85 @@ class PortalHandler(
             return
 
         # ====================================================
-        # EXPLICIT HUMAN ESCALATION
-        # ====================================================
-        #
-        # IMPORTANT:
-        # Human requests are checked BEFORE capability routing.
-        #
-        # This prevents:
-        #
-        # "I want to speak to a human about my pending claims"
-        #
-        # from accidentally being classified as:
-        #
-        # pending_claims_lookup
-        #
-        # It also prevents "connect now" from entering browser
-        # discovery and attempting a sensitive submit action.
+        # RISKY / IRREVERSIBLE CUSTOMER ACTIONS
         # ====================================================
 
-        if is_human_escalation_request(
-            task
+        risky_keywords = (
+            "delete",
+            "remove",
+            "submit",
+            "cancel",
+            "close",
+            "transfer",
+        )
+
+        normalized_task = task.lower()
+
+        if any(
+            keyword in normalized_task
+            for keyword in risky_keywords
         ):
-            print(
-                "\n=================================",
-                flush=True,
-            )
-            print(
-                "CUSTOMER HUMAN ESCALATION",
-                flush=True,
-            )
-            print(
-                "=================================",
-                flush=True,
-            )
-            print(
-                "Member:",
-                member_id,
-                flush=True,
-            )
-            print(
-                "Task:",
-                task,
-                flush=True,
-            )
-            print(
-                "Human escalation required.",
-                flush=True,
-            )
-
             self.send_json(
                 {
-                    "success":
-                        False,
-
-                    "member_id":
-                        member_id,
-
+                    "success": False,
+                    "member_id": member_id,
                     "answer": (
-                        "Your request has been "
-                        "escalated for human review. "
-                        "A human support representative "
-                        "is required to continue."
+                        "This request may perform a risky or "
+                        "irreversible action and requires human "
+                        "review before it can continue."
                     ),
-
-                    "mode":
-                        "escalated",
-
-                    "capability_name":
-                        None,
-
-                    "llm_used":
-                        False,
-
+                    "mode": "escalated",
+                    "capability_name": None,
+                    "llm_used": False,
                     "human_escalation": {
-                        "required":
-                            True,
-
-                        "status":
-                            "pending_human_review",
-
-                        "reason":
-                            "Customer explicitly requested human assistance.",
-
-                        "member_id":
-                            member_id,
-
-                        "customer_request":
-                            task,
+                        "required": True,
+                        "status": "pending_human_review",
+                        "reason": (
+                            "Risky or irreversible customer "
+                            "action requires human approval."
+                        ),
+                        "member_id": member_id,
+                        "customer_request": task,
                     },
                 },
                 200,
             )
             return
 
+        # ====================================================
+        # EXPLICIT HUMAN ESCALATION
+        # ====================================================
+
+        if is_human_escalation_request(
+            task
+        ):
+            self.send_json(
+                {
+                    "success": False,
+                    "member_id": member_id,
+                    "answer": (
+                        "Your request has been "
+                        "escalated for human review. "
+                        "A human support representative "
+                        "is required to continue."
+                    ),
+                    "mode": "escalated",
+                    "capability_name": None,
+                    "llm_used": False,
+                    "human_escalation": {
+                        "required": True,
+                        "status": "pending_human_review",
+                        "reason": (
+                            "Customer explicitly requested "
+                            "human assistance."
+                        ),
+                        "member_id": member_id,
+                        "customer_request": task,
+                    },
+                },
+                200,
+            )
+            return
         # ====================================================
         # CAPABILITY CLASSIFICATION
         # ====================================================
