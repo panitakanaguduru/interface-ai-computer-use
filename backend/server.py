@@ -1486,10 +1486,8 @@ class PortalHandler(
         if not task:
             self.send_json(
                 {
-                    "success":
-                        False,
-                    "error":
-                        "Task is required.",
+                    "success": False,
+                    "error": "Task is required.",
                 },
                 400,
             )
@@ -1522,10 +1520,8 @@ class PortalHandler(
                             f"No member was found with ID "
                             f"{requested_member_id}."
                         ),
-                        "outcome":
-                            "member_not_found",
-                        "member_id":
-                            requested_member_id,
+                        "outcome": "member_not_found",
+                        "member_id": requested_member_id,
                         "steps": [],
                         "actions": [],
                         "action_count": 0,
@@ -1535,7 +1531,8 @@ class PortalHandler(
                     200,
                 )
                 return
-                # ====================================================
+
+        # ====================================================
         # SAFETY: RISKY / IRREVERSIBLE OPERATIONS ACTIONS
         # ====================================================
 
@@ -1580,10 +1577,27 @@ class PortalHandler(
                 200,
             )
             return
+
+        # ====================================================
+        # LLM DISCOVERY
+        # ====================================================
+
         try:
+            referenced_member_ids = re.findall(
+                r"\b1\d{4}\b",
+                task,
+            )
+
+            discovery_member_id = (
+                referenced_member_ids[0]
+                if len(referenced_member_ids) == 1
+                else None
+            )
+
             result = run_agent(
                 task,
                 headless=True,
+                member_id=discovery_member_id,
             )
 
         except Exception as error:
@@ -1607,8 +1621,7 @@ class PortalHandler(
 
             self.send_json(
                 {
-                    "success":
-                        False,
+                    "success": False,
                     "error": (
                         "The agent encountered "
                         "an internal error."
@@ -1618,75 +1631,69 @@ class PortalHandler(
             )
             return
 
+        # ====================================================
+        # SUCCESS
+        # ====================================================
+
         if result.get(
             "success"
         ):
             self.send_json(
                 {
-                    "success":
-                        True,
-                    "task":
-                        result.get(
-                            "task"
-                        ),
-                    "answer":
-                        result.get(
-                            "answer"
-                        ),
-                    "steps":
-                        result.get(
-                            "steps"
-                        ),
-                    "actions":
+                    "success": True,
+                    "task": result.get(
+                        "task"
+                    ),
+                    "answer": result.get(
+                        "answer"
+                    ),
+                    "steps": result.get(
+                        "steps"
+                    ),
+                    "actions": result.get(
+                        "actions",
+                        [],
+                    ),
+                    "action_count": len(
                         result.get(
                             "actions",
                             [],
-                        ),
-                    "action_count":
-                        len(
-                            result.get(
-                                "actions",
-                                [],
-                            )
-                        ),
-                    "final_url":
-                        result.get(
-                            "final_url"
-                        ),
-                    "artifact_id":
-                        result.get(
-                            "artifact_id"
-                        ),
-                    "artifact_file":
-                        result.get(
-                            "artifact_file"
-                        ),
+                        )
+                    ),
+                    "final_url": result.get(
+                        "final_url"
+                    ),
+                    "artifact_id": result.get(
+                        "artifact_id"
+                    ),
+                    "artifact_file": result.get(
+                        "artifact_file"
+                    ),
                 },
                 200,
             )
             return
 
+        # ====================================================
+        # AGENT FAILURE
+        # ====================================================
+
         self.send_json(
             {
-                "success":
-                    False,
-                "task":
-                    result.get(
-                        "task"
-                    ),
-                "answer":
-                    result.get(
-                        "answer"
-                    ),
-                "steps":
-                    result.get(
-                        "steps"
-                    ),
-                "actions":
-                    result.get(
-                        "actions",
-                        [],
-                    ),
+                "success": False,
+                "task": result.get(
+                    "task"
+                ),
+                "answer": result.get(
+                    "answer"
+                ),
+                "steps": result.get(
+                    "steps"
+                ),
+                "actions": result.get(
+                    "actions",
+                    [],
+                ),
                 "error": (
                     result.get(
                         "error"
