@@ -1535,6 +1535,51 @@ class PortalHandler(
                     200,
                 )
                 return
+                # ====================================================
+        # SAFETY: RISKY / IRREVERSIBLE OPERATIONS ACTIONS
+        # ====================================================
+
+        risky_keywords = (
+            "delete",
+            "remove",
+            "submit",
+            "cancel",
+            "close",
+            "transfer",
+        )
+
+        normalized_task = task.lower()
+
+        if any(
+            keyword in normalized_task
+            for keyword in risky_keywords
+        ):
+            self.send_json(
+                {
+                    "success": False,
+                    "task": task,
+                    "answer": (
+                        "This request may perform a risky or "
+                        "irreversible action and requires human "
+                        "review before it can continue."
+                    ),
+                    "mode": "escalated",
+                    "llm_used": False,
+                    "actions": [],
+                    "action_count": 0,
+                    "human_escalation": {
+                        "required": True,
+                        "status": "pending_human_review",
+                        "reason": (
+                            "Risky or irreversible operations "
+                            "action requires human approval."
+                        ),
+                        "customer_request": task,
+                    },
+                },
+                200,
+            )
+            return
         try:
             result = run_agent(
                 task,
