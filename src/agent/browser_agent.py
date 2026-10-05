@@ -32,7 +32,11 @@ MAX_STEPS = 10
 
 PORTAL_URL = os.getenv(
     "TARGET_APP_URL",
-    "http://localhost:8000",
+    (
+        "https://interface-ai-computer-use.onrender.com"
+        if os.getenv("RENDER")
+        else "http://localhost:8000"
+    ),
 )
 
 
